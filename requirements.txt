@@ -1,0 +1,7 @@
+# Astro Runtime includes the following pre-installed providers packages: https://www.astronomer.io/docs/astro/runtime-image-architecture#provider-packages
+pyarrow==17.0.0
+pandas==2.2.3
+azure-keyvault-secrets==4.8.0
+azure-identity==1.18.0
+azure-storage-blob==12.23.1
+python-dotenv==1.0.1
