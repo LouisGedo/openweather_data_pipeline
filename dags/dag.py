@@ -133,20 +133,26 @@ def weather_data_pipeline():
         upload_weather_data(weather_data_df, AZURE_STORAGE_URI, container_name)
         logger.info("Successfully uploaded weather data to Azure Blob Storage.")
 
+    # Get parameters from Airflow variables or defaults
+    api_secret_name = "{{ params.api_secret_name }}"
+    blob_url_secret_name = "{{ params.blob_url_secret_name }}"
+    locations_file = "{{ params.locations_file }}"
+    container_name = "{{ params.container_name }}"
+
     # Execute the secrets retrieval task
     secrets = retrieve_secrets(
-        api_secret_name="OpenWeatherApiKey",
-        blob_url_secret_name="AzureStorageUrl"
+        api_secret_name=api_secret_name,
+        blob_url_secret_name=blob_url_secret_name
     )
 
     # Load location data after secrets are retrieved
-    locations = load_location_data(locations_file="locations.json")
+    locations = load_location_data(locations_file=locations_file)
 
     # Process the weather data after locations are loaded
     weather_data = process_weather_data(locations=locations, secrets=secrets)
 
     # Upload the processed weather data to Azure Blob Storage
-    upload_to_blob = upload_weather_data_to_blob(weather_data, secrets, container_name="openweather")
+    upload_to_blob = upload_weather_data_to_blob(weather_data, secrets, container_name=container_name)
 
     # Set task dependencies
     secrets >> locations >> weather_data >> upload_to_blob
