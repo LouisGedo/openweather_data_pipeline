@@ -24,7 +24,14 @@ logger = setup_logger(
     doc_md=__doc__,
     default_args={"owner": "Astro", "retries": 3},
     tags=["weather_pipeline"],
+    params={
+        "api_secret_name": "OpenWeatherApiKey",
+        "blob_url_secret_name": "AzureStorageUrl",
+        "locations_file": "locations.json",
+        "container_name": "openweather"
+    }
 )
+
 def weather_data_pipeline():
     """
     ### Weather Data Pipeline
